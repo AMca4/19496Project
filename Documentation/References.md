@@ -10,5 +10,7 @@ Database of project references that have been used throughout broken down into v
 
 ## Deep Learning Sources
 
+[1] MSTAR Dataset. https://www.sdms.afrl.af.mil/index.php?collection=mstar
+Copyright 2022 The MathWorks, Inc.
 
 ## Synthetic Aperture Radar Sources
