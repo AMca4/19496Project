@@ -8,8 +8,8 @@ I = imread("BlankFrame.png");  % Read in blank (black frame for targets to be ov
 I = rgb2gray(I);
 
 %% Target Image Options
-nFrames = 5; % Number of frames to be generated
-nTargets = 3; % Max Number of Targets present in each frame
+nFrames = 20; % Number of frames to be generated
+nTargets = 1; % Max Number of Targets present in each frame
 shapeSelection = "filled-circle"; % Target Type in Frame
 
 [xsize,ysize] = size(I);
@@ -238,7 +238,7 @@ for z = 1:out
 
     dataName = target_name + ".png";
    % exportgraphics(figure, dataName);
-    outFolder = "SyntheticDatatsets\" + dataFolder;
+    outFolder = "SyntheticDatasets\" + dataFolder;
     copyfile(dataFolder, outFolder);
     %movefile("CompleteDataset.mat", outFolder);
     %(dataName, outFolder);
