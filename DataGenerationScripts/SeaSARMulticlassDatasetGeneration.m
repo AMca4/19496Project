@@ -4,23 +4,24 @@ clc
 %% IMAGE FORMATION PROCESS
 
 %% Read in blank frame
-I = imread("DataFolder/SyntheticDataImageFiles/BlankFrame.png");  % Read in blank (black frame for targets to be overlayed onto)
+I = imread("DataFolder/SyntheticDataImageFiles/SeaImages/SeaImageBSized.png");  % Read in blank (black frame for targets to be overlayed onto)
 I = rgb2gray(I);
 
 %% Read in Template Target Images
 
-planeImage = imread('DataFolder/SyntheticDataImageFiles/airplaneSimple.png');
-tankImage = imread('DataFolder/SyntheticDataImageFiles/tankSimple.png');
+planeImage = imread('DataFolder/SyntheticDataImageFiles/BareImages/airplaneSimple.png');
+shipImage = imread('DataFolder/SyntheticDataImageFiles/BareImages/shipSimple.png');
 
 %% Target Image Options
-nFrames = 50; % Number of frames to be generated
+nFrames = 10; % Number of frames to be generated
 nTargets = 1; % Max Number of Targets present in each frame
 shapeSelection = "filled-circle"; % Target Type in Frame
 
 [xsize,ysize] = size(I);
 Frames = zeros(xsize,ysize);
+%FI = float(I(:,:,:));
 for i = 1:nFrames
-    Frames(:,:,i) = I;
+    Frames(:,:,i) = single(I)/255.0;
 end
 size(j)
 %% Target Generation In Image
@@ -41,7 +42,7 @@ for i = 1:nFrames % Iterate through nFrames (lenght of image dataset)
          value = randi([0 3]); % Generate random integer from 0 to 3 where 0 = blank, 1 = dot, 2 = plane and 3 = tank
         targetsInFrame(i) = value; % Popuate data with target type in frame
 end
-     
+ save("targetType.mat", "targetsInFrame");
     % finalFrames = {}; % 3d cell array to contain frame data
     finalFrames = []; % 3d cell array to contain frame data
     %lengthA = length(targetsInFrame); % Number of frames in dataset to be generated
@@ -67,7 +68,7 @@ end
             if targetsInFrame(j) == 2
                 targetImage = planeImage;
             elseif targetsInFrame(j) == 3
-                targetImage = tankImage;
+                targetImage = shipImage;
             end
             pos = randi(4);
                 % if shapeSelection == "plane"
@@ -101,9 +102,9 @@ end
                 end
                 
                 finalFrames(:,:,j) = Frames(:,:,j);
-            end
-
         end
+
+    end
 
 
 %% Folder Genration for Target Images
@@ -121,7 +122,7 @@ addpath(foldername); % add path to project so its in scope for future use of syn
 for i = 1:nFrames    %
     % imageMatrixTruecolor = cell2mat(finalFrames(i));
     imageMatrixTruecolor = finalFrames(:,:,i); % Read in frame from dataset
-    imageMatrixGS = imageMatrixTruecolor*1000; % Convert from RGB image to a greyscale image (** Multiply by 1000 to put into valid range for imwrite??)
+    imageMatrixGS = imageMatrixTruecolor*255.0; % Convert from RGB image to a greyscale image (** Multiply by 1000 to put into valid range for imwrite??)
     filename = "FrameNo" + num2str(i) + ".gif"; % generate image and save as a .gif file
     imwrite(imageMatrixGS, filename);  % Write greyscale image in matrix form to gif filel generated
     movefile(filename, foldername);  % Move file to data storage folder
