@@ -265,7 +265,8 @@ for z = 1:out
                 s(j,:)=s(j,:)+Fn(i)*wa*exp(-cj*(4*pi*fo*ic*R)+cj*pi*Kr*...
                     (td.^2-td*Tp)).*(td >= 0 & td <= Tp);
             
-            end
+           %% 
+           end
             
         end
         
@@ -283,7 +284,7 @@ for z = 1:out
     powerArray = xData*yData;
     dataResized = reshape(RAWDATA(:,:,z),[1,powerArray]);
     signalPower = 10*log10(rms(dataResized)^2);
-    noisyData(:,:,z) = awgn(RAWDATA(:,:,z), -5, signalPower);
+    noisyData(:,:,z) = awgn(RAWDATA(:,:,z), -30, signalPower);
     
     
     %noise = noisyData - rawData(:,:,z);
