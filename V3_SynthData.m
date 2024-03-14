@@ -199,6 +199,7 @@ folderSearch = strcat(dataFolder,"/*.gif");
 a=dir(folderSearch);
 out=size(a,1);
 RAWDATA = [];
+snrValues = [];
 
 for z = 1:out
     
@@ -280,11 +281,11 @@ for z = 1:out
     % Noise Implementation
 
     [xData, yData]  = size(RAWDATA(:,:,z));
-
+    snrValues(z) = randi([-30 0]);
     powerArray = xData*yData;
     dataResized = reshape(RAWDATA(:,:,z),[1,powerArray]);
     signalPower = 10*log10(rms(dataResized)^2);
-    noisyData(:,:,z) = awgn(RAWDATA(:,:,z), -30, signalPower);
+    noisyData(:,:,z) = awgn(RAWDATA(:,:,z), -25, signalPower);
     
     
     %noise = noisyData - rawData(:,:,z);

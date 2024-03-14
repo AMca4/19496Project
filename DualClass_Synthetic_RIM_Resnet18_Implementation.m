@@ -80,7 +80,7 @@ addpath(targetsFolder);
 
 %% Read in synthetic data and format as a 3d image (RGB)
 
-load("SyntheticDatasets\SyntheticData02Mar2024013607\CompleteDataset.mat"); % Select dataset to be used
+load("SyntheticDatasets/100F_0dB_Land/CompleteDataset.mat"); % Select dataset to be used
 
 dataset = noisyData;
 
@@ -215,3 +215,8 @@ for i = 1:4
     label = YPred(idx(i));
     title(string(label) + ", " + num2str(100*max(probs(idx(i),:)),3) + "%");
 end
+
+%% Store Results and workspace
+
+
+save("0dB_RIM_DC.mat");

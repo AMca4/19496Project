@@ -9,8 +9,8 @@ I = rgb2gray(I);
 
 %% Read in Template Target Images
 
-planeImage = imread('DataFolder/SyntheticDataImageFiles/airplaneSimple.png');
-tankImage = imread('DataFolder/SyntheticDataImageFiles/tankSimple.png');
+shipAImage = imread('DataFolder/SyntheticDataImageFiles/shipA.png');
+%tankImage = imread('DataFolder/SyntheticDataImageFiles/tankSimple.png');
 
 %% Target Image Options
 nFrames = 5; % Number of frames to be generated
@@ -38,8 +38,7 @@ size(j)
 targetsInFrame = []; % Array of target type present in frame if any
 
 for i = 1:nFrames % Iterate through nFrames (lenght of image dataset)
-        %value = randi([0 3]); % Generate random integer from 0 to 3 where 0 = blank, 1 = dot, 2 = plane and 3 = tank
-        value = randi([1 3]); % Generate random integer from 0 to 3 where 0 = blank, 1 = dot, 2 = plane and 3 = tank
+        value = randi([1 2]); % Generate random integer from 1 to 3 where 1 = blank, 2 = ShipA and 3 = ShipB
         targetsInFrame(i) = value; % Popuate data with target type in frame
 end
      
@@ -51,42 +50,17 @@ end
 
     for j = 1:nFrames
 
-        if targetsInFrame(j) == 0
-            %noisyFrame = imnoise(Frames(:,:,j),"gaussian",0, 0.01);
-            %noisyFrame = imnoise(Frames(:,:,j),"gaussian",0, 0.1);
-            %baseFrames(:,:,j) = Frames(:,:,j);
-            %snrValues(j) = snr(baseFrames(:,:,j),noisyFrame);
-            %finalFrames(:,:,j) = noisyFrame;
+        if targetsInFrame(j) == 1
             finalFrames(:,:,j) = Frames(:,:,j);
-            
-        elseif targetsInFrame(j) == 1
-            frame = Frames(:,:,j); % Variable for individual frame to be operated on
-            RGB =  Frames(:,:,j);
-            plainFrame = 0;
-            x = randi(xsize); % Genrated random x postion on frame
-            y = randi(ysize); % generate random y postion on frame
-            sizeShape = 1; % Size of Shape Input (INVESTIGATE MEANING OF THIS INPUT, RATIO TO FRAME ETC????)
-            RGB = insertShape(frame,"filled-circle",[x y sizeShape],ShapeColor="white",Opacity=1); % I to be modified to be currently modified frame, needs to be modified n times then saves as new PNG
-            baseFrames(:,:,j) = rgb2gray(RGB);
-            %noisyFrame = imnoise(RGB,"gaussian",0, 0.01);
-            %noisyFrame = imnoise(RGB,"gaussian",0, 0.1);
-            %snrValues(j) = snr(baseFrames(:,:,j),rgb2gray(noisyFrame));
-            %finalFrames(:,:,j) = rgb2gray(noisyFrame); % Insert Frame with targets into dataset 
-            finalFrames(:,:,j) = baseFrames(:,:,j);
 
         elseif targetsInFrame(j) == 2 || targetsInFrame(j) == 3
 
             if targetsInFrame(j) == 2
-                targetImage = planeImage;
-            elseif targetsInFrame(j) == 3
-                targetImage = tankImage;
+                targetImage = shipAImage;
+            %elseif targetsInFrame(j) == 3
+            %    targetImage = tankImage;
             end
             pos = randi(9);
-                % if shapeSelection == "plane"
-                %     targetImage = planeImage;
-                % elseif shapeSelection == "tank"
-                %     targetImage = tankImage;
-                % end
                 % simply insert the smaller image into the SE corner by direct
                 % indexing Random position algorithm to be completed
                 targetImage = rgb2gray(targetImage);
@@ -132,12 +106,7 @@ end
     
                         Frames((end/2)-sza(1)+1:(end/2),(end/2)-sza(2)+1:(end/2),j) = targetImage; % insert into ROI
                 end
-                
-                %noisyFrame = imnoise(Frames(:,:,j),"gaussian",0, 0.01);
-                %noisyFrame = imnoise(Frames(:,:,j),"gaussian",0, 0.1);
-                %baseFrames(:,:,j) = Frames(:,:,j);
-                %snrValues(j) = snr(baseFrames(:,:,j),noisyFrame);
-                %finalFrames(:,:,j) = noisyFrame;
+
                 finalFrames(:,:,j) = Frames(:,:,j);
             end
 
@@ -164,42 +133,6 @@ for i = 1:nFrames    %
     imwrite(imageMatrixGS, filename);  % Write greyscale image in matrix form to gif filel generated
     movefile(filename, foldername);  % Move file to data storage folder
 end
-
-
-%% Ground Truth Data Generation
-
-% Count Target Occurences For random Dot Case
-shapeType =1;
-if shapeType == 1
-    count1 = 0;
-    count2 = 0;
-    count3 = 0;
-
-    for z = 1:nFrames
-        nDots = targetsInFrame(z);
-        switch nDots
-            case 1
-                count1 = count1 +1;
-            case 2
-                count2 = count2 +1;
-            case 3
-                count3 = count3 +1;
-        end
-    end
-    dotCount = [count1, count2, count3];
-    
-
-    % N Targets in Frame for Plane Data
-elseif shapetype == 2
-        for z = 1:nFrames
-            targetPresent = targetsInFrame(z);
-        end
-
-end
-
-
-
-
 
 % Synthetic SAR Data Generation
 
