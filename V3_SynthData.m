@@ -13,7 +13,7 @@ planeImage = imread('DataFolder/SyntheticDataImageFiles/airplaneSimple.png');
 tankImage = imread('DataFolder/SyntheticDataImageFiles/tankSimple.png');
 
 %% Target Image Options
-nFrames = 100; % Number of frames to be generated
+nFrames = 10; % Number of frames to be generated
 nTargets = 1; % Max Number of Targets present in each frame
 shapeSelection = "filled-circle"; % Target Type in Frame
 
@@ -58,7 +58,7 @@ end
             elseif targetsInFrame(j) == 3
                 targetImage = tankImage;
             end
-            pos = randi(4);
+            pos = randi(9);
                 % if shapeSelection == "plane"
                 %     targetImage = planeImage;
                 % elseif shapeSelection == "tank"
@@ -224,7 +224,7 @@ for z = 1:out
     
     %% Azimuth Parameters
     Ka=(2*vp^2)./(lambda*(Xc)); % Linear Azimuth FM rate
-    % Measurement Parameters
+    %% Measurement Parameters
     rbins=2*ceil((.5*(Tf-Ts))/dt); % Number of time (Range) samples
     t=Ts+(0:rbins-1)*dt; % Time array for data acquisition
     s=zeros(PRF*dur,rbins); % Echoed signal array
@@ -285,7 +285,7 @@ for z = 1:out
     powerArray = xData*yData;
     dataResized = reshape(RAWDATA(:,:,z),[1,powerArray]);
     signalPower = 10*log10(rms(dataResized)^2);
-    noisyData(:,:,z) = awgn(RAWDATA(:,:,z), -25, signalPower);
+    noisyData(:,:,z) = awgn(RAWDATA(:,:,z),-30, signalPower);
     
     
     %noise = noisyData - rawData(:,:,z);
